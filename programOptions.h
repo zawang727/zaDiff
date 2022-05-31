@@ -1,5 +1,4 @@
 #include <iostream>
-#include <studio.h>
 
 enum Solver 
 { 
@@ -16,8 +15,8 @@ public:
 		return instance;
 	}
 	int debugMsgLevel = 1;
-	Solver solver = 1;
+	Solver solver = byLine;
 private:
 	programOptions() = default;
 	~programOptions() = default;
-}
+};
