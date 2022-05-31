@@ -1,14 +1,16 @@
 #include <iostream>
-#include <studio.h>
-#include <printUtils.h>
+#include <vector>
+#include "printUtils.h"
+
+using namespace std;
 
 class fileReader
 {
 public:
   fileReader() = default;
-  ~fiileReader() = default;
+  ~fileReader() = default;
   
 private:
-  filePath;
-  string 
-}
+  string filePath;
+  vector<string> contents;
+};
