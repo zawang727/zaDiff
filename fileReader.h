@@ -2,4 +2,13 @@
 #include <studio.h>
 #include <printUtils.h>
 
-class 
+class fileReader
+{
+public:
+  fileReader() = default;
+  ~fiileReader() = default;
+  
+private:
+  filePath;
+  string 
+}
