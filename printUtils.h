@@ -2,33 +2,43 @@
 #include <map>
 using namespace std;
 
-class printOptions
-{
-public:
-	printOptions() = default;
-	~printOptions() = default;
-	bool setFileName(string str);
-	bool setFolderName(string str);
-	
-private:
-	string fileName = "za.df";
-	string folderName = "./";
-};
 
+//-------------------------------------------------
+//Here the regionDiff type pair<int,int> is the diff region negative means this line or  
+//character upper, and positive means line or charactor downward
+//-------------------------------------------------
 class diffInfo
 {
 public:
 	diffInfo() = default;
 	~diffInfo() = default;
+	typedef pair<int, int> regionDiff;
+	typedef map<regionDiff, vector<string>> lineDiff;
+	typedef map<regionDiff, vector<lineDiff>> fileDiff; 
+	fileDiff firstFileDiff;
+	fileDiff secondFileDiff;
+
+	bool swapFirstAndSecondFiles()
+	{
+		swap(firstFileName, secondFileName);
+		swap(firstFolderName, secondFolderName);
+		swap(firstFileDiff, secondFileDiff);
+		return true;
+	}
+
 	string firstFileName;
 	string firstFolderName;
 	string secondFileName;
 	string secondFolderName;
-	map<pair<unsigned int, unsigned int>, vector<string>> firstFileDiff;
-	map<pair<unsigned int, unsigned int>, vector<string>> secondFileDiff;
-	bool swapFirstAndSecondFiles();
 };
-//can be strategy pattern
+
+class getPrinter
+{
+public:
+	getPrinter() = default;
+	~getPrinter() = default;
+	diffPrinter* getDiffPrinter(); 
+};
 
 class diffPrinter
 {
@@ -41,8 +51,8 @@ public:
 	bool setOutputFileFolder(string str);
 	bool setoutputFileName(string str);
 private:
-	string outputFileFolder;
-	string outputFileName;
+	string outputFileFolder = "za.df";
+	string outputFileName = "./";
 	diffInfo _diffInfo;
 };
 

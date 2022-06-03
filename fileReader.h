@@ -9,8 +9,9 @@ class fileReader
 public:
   fileReader() = default;
   ~fileReader() = default;
-  
+  bool read();
+  bool setFilePath(string str);
 private:
   string filePath;
-  vector<string> contents;
+  string contents;
 };

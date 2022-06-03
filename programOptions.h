@@ -1,9 +1,16 @@
 #include <iostream>
 
-enum Solver 
+enum solverEnum
+{
+	solverEnumDefault = 0,
+	solverEnumByLine = 1,
+	solverEnumSameLineGreedy = 2
+};
+enum diffPrinterEnum
 { 
-byLine = 1,
-sameLineGreedy = 2,
+	diffPrinterEnumDefault = 0,
+	diffPrinterEnumMerged = 1,
+	diffPrinterEnumSingle = 2
 };
 
 class programOptions
@@ -15,7 +22,9 @@ public:
 		return instance;
 	}
 	int debugMsgLevel = 1;
-	Solver solver = byLine;
+	solverEnum solver = solverEnumDefault;
+	diffPrinterEnum diffPrinter = diffPrinterEnumDefault;
+
 private:
 	programOptions() = default;
 	~programOptions() = default;
