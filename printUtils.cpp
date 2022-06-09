@@ -183,13 +183,85 @@ bool singleFileDiffPrint::printConsole()
 			isInADiff = true;
 		}
 	}
-
+	cout << "---------------------------------------" << endl;
 	return true;
 }
 
 bool singleFileDiffPrint::printToFile()
 {
+	string filePrint;
 
+	if(fileIndex != 1 && fileIndex != 2)
+	{
+		cout<<"File index unset\n";
+		return false;
+	}
+
+ 	bool isInADiff =false;
+	auto diffIterThis = (fileIndex==2)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
+	auto diffIterAnother = (fileIndex==1)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
+
+	for(unsigned int i = 0; i < originalContents.size(); ++i)
+	{
+		if(-(diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
+		{
+			filePrint += "---------------------------------------\n";
+			isInADiff = false;
+			diffIterThis++;
+			diffIterAnother++;
+		}
+		if(-(diffIterThis->first.first) == static_cast<int>(i+1) && !isInADiff)
+		{
+			filePrint += "---------------------------------------\n";
+			filePrint += "This file line ";
+			filePrint += to_string(abs(diffIterThis->first.first));
+			filePrint += ((diffIterThis->first.first>0)? " Upper" : " Downward");
+			filePrint += " to ";
+			filePrint += to_string(abs(diffIterThis->first.second));
+			filePrint += ((diffIterThis->first.second>0)? " Upper.\n" : " Downward.\n");
+			filePrint += "Another file line ";
+			filePrint += to_string(abs(diffIterAnother->first.first));
+			filePrint += ((diffIterAnother->first.first>0)? " Upper to " : " Downward to ");
+			filePrint += to_string(abs(diffIterAnother->first.second));
+			filePrint += ((diffIterAnother->first.second>0)? " Upper.\n" : " Downward.\n");
+			isInADiff = true;
+		}
+		cout<< originalContents[i+1].c_str() << endl;
+		if((diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
+		{
+			filePrint += "---------------------------------------\n";
+			isInADiff = false;
+			diffIterThis++;
+			diffIterAnother++;
+		}
+		if((diffIterThis->first.first) == static_cast<int>(i+1) && !isInADiff)
+		{
+			filePrint += "---------------------------------------\n";
+			filePrint += "This file line ";
+			filePrint += to_string(abs(diffIterThis->first.first));
+			filePrint += ((diffIterThis->first.first>0)? " Upper" : " Downward");
+			filePrint += " to ";
+			filePrint += to_string(abs(diffIterThis->first.second));
+			filePrint += ((diffIterThis->first.second>0)? " Upper.\n" : " Downward.\n");
+			filePrint += "Another file line ";
+			filePrint += to_string(abs(diffIterAnother->first.first));
+			filePrint += ((diffIterAnother->first.first>0)? " Upper to " : " Downward to ");
+			filePrint += to_string(abs(diffIterAnother->first.second));
+			filePrint += ((diffIterAnother->first.second>0)? " Upper.\n" : " Downward.\n");
+			isInADiff = true;
+		}
+	}
+	std::ofstream ofs((this->outputFileFolder+this->outputFileName).c_str(),
+	std::ofstream::out);
+
+	if(ofs)
+	{
+		ofs << filePrint;
+		ofs.close();
+		return true;
+	}
+	ofs.close();
+	return false;
 }
 
 bool singleFileDiffPrint::setDiffInfo(diffInfo& diff)
