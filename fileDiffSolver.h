@@ -11,7 +11,7 @@ public:
 	string firstFolderName;
 	string secondFileName;
 	string secondFolderName;
-private:
+protected:
     vector<string>& firstContents;
     vector<string>& secondContents;
 };

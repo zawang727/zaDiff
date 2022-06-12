@@ -1,11 +1,12 @@
 #include "fileDiffSolver.h"
 #include "programOptions.h"
+#include "fileDiffSolverByLine.h"
 
 void fileDiffSolver::setContents(vector<string>& contents, int index)
 {
     if(index == 1)
     {
-        firstContents = contents
+        firstContents = contents;
     }
     else if (index == 2)
     {
@@ -26,8 +27,11 @@ fileDiffSolver* fileDiffSolverFactory::getFileDiffSolver()
 
     switch(solverType)
     {
+        case solverEnumByLine:
+        resSolver = new fileDiffSolverByLine();
+        break;
         default:
-        resSolver = new  
+        resSolver = new fileDiffSolverByLine();
     }
 
     return resSolver;

@@ -1,15 +1,18 @@
 #include <iostream>
 #include <map>
+#include <vector>
 #include <functional>
 using namespace std;
 
 typedef pair<int, int> regionDiff;
-auto regionDiffCmp = [](const regionDiff& a, const regionDiff& b)
-{ 
-	if(abs(a.first) == abs(b.first)) return (a.first<0);
-	return abs(a.first) < abs(b.first); 
+
+struct regionDiffCmp 
+{
+	bool operator()(const regionDiff& a, const regionDiff& b) const {
+		if(abs(a.first) == abs(b.first)) return (bool)(a.first<0);
+		return (bool)(abs(a.first) < abs(b.first)); 
+	}
 };
-//typedef map<regionDiff, vector<string>, regionDiffCmp> fileDiff;
 
 //-------------------------------------------------
 //Here the regionDiff type pair<int,int> is the diff region negative means this line or  
@@ -20,14 +23,16 @@ class diffInfo
 public:
 	diffInfo() = default;
 	~diffInfo() = default;
-	map<regionDiff, vector<string>, decltype(regionDiffCmp)> firstFileDiff;
-	map<regionDiff, vector<string>, decltype(regionDiffCmp)> secondFileDiff;
+	map<regionDiff, vector<string>, regionDiffCmp> firstFileDiff;
+	map<regionDiff, vector<string>, regionDiffCmp> secondFileDiff;
 
 	bool swapFirstAndSecondFiles()
 	{
 		swap(firstFileName, secondFileName);
 		swap(firstFolderName, secondFolderName);
-		swap(firstFileDiff, secondFileDiff);
+		map<regionDiff, vector<string>, regionDiffCmp> buffer = firstFileDiff;
+		firstFileDiff = secondFileDiff;
+		secondFileDiff = buffer;
 		return true;
 	}
 
@@ -35,14 +40,6 @@ public:
 	string firstFolderName;
 	string secondFileName;
 	string secondFolderName;
-};
-
-class getPrinter
-{
-public:
-	getPrinter() = default;
-	~getPrinter() = default;
-	diffPrinter* getDiffPrinter(); 
 };
 
 class diffPrinter
@@ -84,6 +81,14 @@ public:
 private:
 	int fileIndex = 0;
 	vector<string>& originalContents;
+};
+
+class getPrinter
+{
+public:
+	getPrinter() = default;
+	~getPrinter() = default;
+	diffPrinter* getDiffPrinter(); 
 };
 
 std::vector<std::string> split_string(const std::string& str,

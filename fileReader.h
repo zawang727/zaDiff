@@ -11,6 +11,10 @@ public:
   ~fileReader() = default;
   bool read();
   bool setFilePath(string str);
+  string& getContents()
+  {
+    return this->contents;
+  } 
 private:
   string filePath;
   string contents;

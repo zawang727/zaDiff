@@ -15,22 +15,23 @@ diffInfo fileDiffSolverByLine::solve()
 
     for(int i = 0; i < compareLines-1; ++i)
     {
-        if(firstContents[i+1] != secondContents[i+1])
+        if(firstContents[i+1] == secondContents[i+1])
         {
             if(inDiff)
             {
-
+                continue;
             }
             else
             {
-
+                startDiff = i+1;
             }
         }
         else
         {
             if(inDiff)
             {
-                resDiff.firstFileDiff.insert(pair(-1*(int)startDiff, i),firstContents);
+                resDiff.firstFileDiff.insert(pair(pair(-1*(int)startDiff, i),
+                vector<string> (firstContents.begin()+startDiff-1, firstContents.begin()+i+1)));
             }
         }
     }

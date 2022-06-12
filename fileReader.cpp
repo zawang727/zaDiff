@@ -9,7 +9,7 @@ bool fileReader::read() {
     if (!ifs.is_open()) {
         return false;
     }
-
+    
     std::stringstream ss;
     ss << ifs.rdbuf();
     contents = ss.str();
