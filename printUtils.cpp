@@ -37,14 +37,14 @@ diffPrinter* getPrinter::getDiffPrinter()
 
 bool mergedDiffPrint::printConsole()
 {
-	if(_diffInfo.firstFileDiff.size() != _diffInfo.secondFileDiff.size()) return false;
-	cout << "First file is:" << _diffInfo.firstFolderName.c_str() 
-	<< _diffInfo.firstFileName.c_str() << endl;
-	cout << "Second file is:" << _diffInfo.secondFolderName.c_str() 
-	<< _diffInfo.secondFileName.c_str() << endl;
+	if(_diffInfo->firstFileDiff.size() != _diffInfo->secondFileDiff.size()) return false;
+	cout << "First file is:" << _diffInfo->firstFolderName.c_str() 
+	<< _diffInfo->firstFileName.c_str() << endl;
+	cout << "Second file is:" << _diffInfo->secondFolderName.c_str() 
+	<< _diffInfo->secondFileName.c_str() << endl;
 
-	auto bDiff = _diffInfo.secondFileDiff.begin();
-	for(auto& i: _diffInfo.firstFileDiff)
+	auto bDiff = _diffInfo->secondFileDiff.begin();
+	for(auto& i: _diffInfo->firstFileDiff)
 	{
 		cout << "First file line " << abs(i.first.first) << " to " 
 		<< abs(i.first.second) << "." << endl;
@@ -68,22 +68,22 @@ bool mergedDiffPrint::printToFile()
 {
 	string filePrint;
 
-	if(_diffInfo.firstFileDiff.size() != _diffInfo.secondFileDiff.size()) 
+	if(_diffInfo->firstFileDiff.size() != _diffInfo->secondFileDiff.size()) 
 	{
 		filePrint += "Error in data\n";
 		return false;
 	}
 	filePrint += "First file is:";
-	filePrint += _diffInfo.firstFolderName;
-	filePrint += _diffInfo.firstFileName;
+	filePrint += _diffInfo->firstFolderName;
+	filePrint += _diffInfo->firstFileName;
 	filePrint += "\n";
 	filePrint += "Second file is:";
-	filePrint += _diffInfo.secondFolderName;
-	filePrint += _diffInfo.secondFileName;
+	filePrint += _diffInfo->secondFolderName;
+	filePrint += _diffInfo->secondFileName;
 	filePrint += "\n";
 
-	auto bDiff = _diffInfo.secondFileDiff.begin();
-	for(auto& i: _diffInfo.firstFileDiff)
+	auto bDiff = _diffInfo->secondFileDiff.begin();
+	for(auto& i: _diffInfo->firstFileDiff)
 	{
 		filePrint += "First file line ";
 		filePrint += to_string(abs(i.first.first));
@@ -126,7 +126,7 @@ bool mergedDiffPrint::printToFile()
 	return false;
 }
 
-bool mergedDiffPrint::setDiffInfo(diffInfo& diff)
+bool mergedDiffPrint::setDiffInfo(diffInfo* diff)
 {
 	_diffInfo = diff;
 	return true;
@@ -140,10 +140,10 @@ bool singleFileDiffPrint::printConsole()
 		return false;
 	}
  	bool isInADiff =false;
-	auto diffIterThis = (fileIndex==2)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
-	auto diffIterAnother = (fileIndex==1)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
+	auto diffIterThis = (fileIndex==2)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
+	auto diffIterAnother = (fileIndex==1)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
 
-	for(unsigned int i = 0; i < originalContents.size(); ++i)
+	for(unsigned int i = 0; i < originalContents->size(); ++i)
 	{
 		if(-(diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
 		{
@@ -163,7 +163,7 @@ bool singleFileDiffPrint::printConsole()
 			<< abs(diffIterAnother->first.second) << ((diffIterAnother->first.second>0)? " Upper" : " Downward") << ".\n";
 			isInADiff = true;
 		}
-		cout<< originalContents[i+1].c_str() << endl;
+		cout<< (*originalContents)[i+1].c_str() << endl;
 		if((diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
 		{
 			cout << "---------------------------------------" << endl;
@@ -198,10 +198,10 @@ bool singleFileDiffPrint::printToFile()
 	}
 
  	bool isInADiff =false;
-	auto diffIterThis = (fileIndex==2)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
-	auto diffIterAnother = (fileIndex==1)? _diffInfo.secondFileDiff.begin():_diffInfo.firstFileDiff.begin();
+	auto diffIterThis = (fileIndex==2)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
+	auto diffIterAnother = (fileIndex==1)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
 
-	for(unsigned int i = 0; i < originalContents.size(); ++i)
+	for(unsigned int i = 0; i < originalContents->size(); ++i)
 	{
 		if(-(diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
 		{
@@ -226,7 +226,7 @@ bool singleFileDiffPrint::printToFile()
 			filePrint += ((diffIterAnother->first.second>0)? " Upper.\n" : " Downward.\n");
 			isInADiff = true;
 		}
-		cout<< originalContents[i+1].c_str() << endl;
+		cout<< (*originalContents)[i+1].c_str() << endl;
 		if((diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)
 		{
 			filePrint += "---------------------------------------\n";
@@ -264,7 +264,7 @@ bool singleFileDiffPrint::printToFile()
 	return false;
 }
 
-bool singleFileDiffPrint::setDiffInfo(diffInfo& diff)
+bool singleFileDiffPrint::setDiffInfo(diffInfo* diff)
 {
 	_diffInfo = diff;
 }
@@ -274,7 +274,7 @@ void singleFileDiffPrint::setFileIndex(int index)
 	fileIndex = index;
 }
 
-void singleFileDiffPrint::setOriginalContents(vector<string>& str)
+void singleFileDiffPrint::setOriginalContents(vector<string>* str)
 {
 	originalContents = str;
 }

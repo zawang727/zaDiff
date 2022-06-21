@@ -1,9 +1,11 @@
+#pragma once
 #include "printUtils.h"
 
 class fileDiffSolver
 {
 public:
-    fileDiffSolver() = default;
+    fileDiffSolver(vector<string>& _firstContents, vector<string>& _secondContents);
+    fileDiffSolver(vector<string>&& , vector<string>&& ) = delete;
     virtual ~fileDiffSolver() = default;
     virtual diffInfo solve() = 0;
     void setContents(vector<string>& contents, int index);
@@ -21,5 +23,6 @@ class fileDiffSolverFactory
 public:
     fileDiffSolverFactory() = default;
     ~fileDiffSolverFactory() = default;
-    fileDiffSolver* getFileDiffSolver();
+    fileDiffSolver* getFileDiffSolver(vector<string>& _firstContents, 
+    vector<string>& _secondContents);
 };

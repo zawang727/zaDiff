@@ -2,6 +2,12 @@
 #include "programOptions.h"
 #include "fileDiffSolverByLine.h"
 
+fileDiffSolver::fileDiffSolver(vector<string>& _firstContents, 
+vector<string>& _secondContents):
+firstContents(_firstContents), secondContents(_secondContents)
+{
+}
+
 void fileDiffSolver::setContents(vector<string>& contents, int index)
 {
     if(index == 1)
@@ -18,7 +24,8 @@ void fileDiffSolver::setContents(vector<string>& contents, int index)
     }
 }
 
-fileDiffSolver* fileDiffSolverFactory::getFileDiffSolver()
+fileDiffSolver* fileDiffSolverFactory::getFileDiffSolver(vector<string>& _firstContents, 
+vector<string>& _secondContents)
 {
     programOptions& solverOption = programOptions::getInstance();
     solverEnum solverType = solverOption.solver;
@@ -28,10 +35,10 @@ fileDiffSolver* fileDiffSolverFactory::getFileDiffSolver()
     switch(solverType)
     {
         case solverEnumByLine:
-        resSolver = new fileDiffSolverByLine();
+        resSolver = new fileDiffSolverByLine(_firstContents, _secondContents);
         break;
         default:
-        resSolver = new fileDiffSolverByLine();
+        resSolver = new fileDiffSolverByLine(_firstContents, _secondContents);
     }
 
     return resSolver;

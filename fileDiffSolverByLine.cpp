@@ -1,5 +1,11 @@
 #include "fileDiffSolverByLine.h"
 
+fileDiffSolverByLine::fileDiffSolverByLine(vector<string>& _firstContents, 
+    vector<string>& _secondContents):
+fileDiffSolver(_firstContents,_secondContents)
+{
+}
+
 diffInfo fileDiffSolverByLine::solve()
 {
     diffInfo resDiff;
@@ -30,7 +36,8 @@ diffInfo fileDiffSolverByLine::solve()
         {
             if(inDiff)
             {
-                resDiff.firstFileDiff.insert(pair(pair(-1*(int)startDiff, i),
+                resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
+                (pair<int,int>(-1*(int)startDiff, i),
                 vector<string> (firstContents.begin()+startDiff-1, firstContents.begin()+i+1)));
             }
         }

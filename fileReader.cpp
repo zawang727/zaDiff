@@ -5,7 +5,7 @@
 #include "programOptions.h"
 
 bool fileReader::read() {
-    std::ifstream ifs("input.txt", std::ios::in);
+    std::ifstream ifs(filePath.c_str(), std::ios::in);
     if (!ifs.is_open()) {
         return false;
     }
@@ -25,4 +25,5 @@ bool fileReader::read() {
 
 bool fileReader::setFilePath(string str){
     filePath = str;
+    return true;
 }

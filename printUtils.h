@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <map>
 #include <vector>
@@ -49,13 +50,13 @@ public:
 	virtual ~diffPrinter() = default;
 	virtual bool printConsole() = 0;
 	virtual bool printToFile() = 0;
-	virtual bool setDiffInfo(diffInfo& diff) = 0;
+	virtual bool setDiffInfo(diffInfo* diff) = 0;
 	bool setOutputFileFolder(string str);
 	bool setOutputFileName(string str);
 protected:
 	string outputFileFolder = "./";
 	string outputFileName = "za.df";  
-	diffInfo& _diffInfo;
+	diffInfo* _diffInfo;
 };
 
 class mergedDiffPrint: public diffPrinter
@@ -65,7 +66,7 @@ public:
 	~mergedDiffPrint() = default;
 	bool printConsole() override;
 	bool printToFile() override;
-	bool setDiffInfo(diffInfo& diff) override;
+	bool setDiffInfo(diffInfo* diff) override;
 };
 
 class singleFileDiffPrint: public diffPrinter
@@ -75,12 +76,12 @@ public:
 	~singleFileDiffPrint() = default;
 	bool printConsole() override;
 	bool printToFile() override;
-	bool setDiffInfo(diffInfo& diff) override;
+	bool setDiffInfo(diffInfo* diff) override;
 	void setFileIndex(int index);
-	void setOriginalContents(vector<string>& str);
+	void setOriginalContents(vector<string>* str);
 private:
 	int fileIndex = 0;
-	vector<string>& originalContents;
+	vector<string>* originalContents;
 };
 
 class getPrinter

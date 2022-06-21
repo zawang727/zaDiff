@@ -1,6 +1,6 @@
+#pragma once
 #include <iostream>
 #include <vector>
-#include "printUtils.h"
 
 using namespace std;
 
