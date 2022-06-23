@@ -24,6 +24,7 @@ all : $(LINK_TARGET)
 	
 .PHONY:clean
 clean:
+	del -f $(REBUILDABLES)
 	rm -f $(REBUILDABLES)
 	echo Clean done
 	

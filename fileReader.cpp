@@ -4,6 +4,8 @@
 #include "fileReader.h"
 #include "programOptions.h"
 
+bool printRead = false;
+
 bool fileReader::read() {
     std::ifstream ifs(filePath.c_str(), std::ios::in);
     if (!ifs.is_open()) {
@@ -14,7 +16,7 @@ bool fileReader::read() {
     ss << ifs.rdbuf();
     contents = ss.str();
 
-    if(programOptions::getInstance().debugMsgLevel)
+    if(programOptions::getInstance().debugMsgLevel && false)
     {
         cout << contents << endl;
     }

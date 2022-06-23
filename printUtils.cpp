@@ -38,9 +38,9 @@ diffPrinter* getPrinter::getDiffPrinter()
 bool mergedDiffPrint::printConsole()
 {
 	if(_diffInfo->firstFileDiff.size() != _diffInfo->secondFileDiff.size()) return false;
-	cout << "First file is:" << _diffInfo->firstFolderName.c_str() 
+	cout << "First file is:" << _diffInfo->firstFolderName.c_str() << "\\"
 	<< _diffInfo->firstFileName.c_str() << endl;
-	cout << "Second file is:" << _diffInfo->secondFolderName.c_str() 
+	cout << "Second file is:" << _diffInfo->secondFolderName.c_str() << "\\"
 	<< _diffInfo->secondFileName.c_str() << endl;
 
 	auto bDiff = _diffInfo->secondFileDiff.begin();
@@ -267,6 +267,7 @@ bool singleFileDiffPrint::printToFile()
 bool singleFileDiffPrint::setDiffInfo(diffInfo* diff)
 {
 	_diffInfo = diff;
+	return true;
 }
 
 void singleFileDiffPrint::setFileIndex(int index)
