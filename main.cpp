@@ -35,6 +35,7 @@ int main()
 	mergedDiffPrint _mergedDiffPrint;
 	_mergedDiffPrint.setDiffInfo(&result);
 	_mergedDiffPrint.printConsole();
+	_mergedDiffPrint.printToFile();
 	system("pause");
 	return 0; 
 };

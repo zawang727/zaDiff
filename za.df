@@ -1,0 +1,35 @@
+First file is:C:\Users\Jennan Wang\Desktop\zaDiff\testcases\simpleSameLineNumber1.txt
+Second file is:C:\Users\Jennan Wang\Desktop\zaDiff\testcases\simpleSameLineNumber2.txt
+First file line 9 Downward to 12 Upper.
+    vector<int> int_vec {1, 23, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};
+Second file line 9 Downward to 12 Upper.
+    vector<int> i, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};645d
+---------------------------------------
+First file line 14 Downward to 16 Upper.
+    cout << std::left << setw(10) << "vec: ";
+Second file line 14 Downward to 16 Upper.
+    cout << std::left << sdvsvsetw(10) << "vec: ";
+---------------------------------------
+First file line 16 Downward to 18 Upper.
+         std::ostream_iterator<int>(cout,"; "));
+Second file line 16 Downward to 18 Upper.
+         stditerator<int>(cout,"; "));
+---------------------------------------
+First file line 20 Downward to 24 Upper.
+    copy(sub_vec.begin(), sub_vec.end(),
+         std::ostream_iterator<int>(cout,"; "));
+    cout << endl;
+Second file line 20 Downward to 24 Upper.
+    copy(subec.end(),
+         std::os_iterator<int>(cout,"; "));
+    cou534fuhndl;1
+---------------------------------------
+First file line 24 Downward to 27 Upper.
+    return EXIT_SUCCESS;
+}
+Second file line 24 Downward to 27 Upper.
+    return EXIT_SESS;
+}54651
+---------------------------------------

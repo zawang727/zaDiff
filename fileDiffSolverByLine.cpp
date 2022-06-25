@@ -26,12 +26,13 @@ diffInfo fileDiffSolverByLine::solve()
             if(inDiff)
             {
                 resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
-                (pair<int,int>(-1*(int)startDiff, i),
-                vector<string> (firstContents.begin()+startDiff-1, firstContents.begin()+i+1)));
+                (pair<int,int>(-1*(int)startDiff, i+1),
+                vector<string> (firstContents.begin()+startDiff+1, firstContents.begin()+i+1)));
                 resDiff.secondFileDiff.insert(pair<regionDiff, vector<string>>
-                (pair<int,int>(-1*(int)startDiff, i),
-                vector<string> (secondContents.begin()+startDiff-1, secondContents.begin()+i+1)));
+                (pair<int,int>(-1*(int)startDiff, i+1),
+                vector<string> (secondContents.begin()+startDiff+1, secondContents.begin()+i+1)));
                 inDiff = false;
+                startDiff = i+1;
             }
             else
             {
@@ -47,11 +48,11 @@ diffInfo fileDiffSolverByLine::solve()
     if(inDiff)
     {
         resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
-        (pair<int,int>(-1*(int)startDiff, compareLines-1),
-        vector<string> (firstContents.begin()+startDiff-1, firstContents.begin()+compareLines)));
+        (pair<int,int>(-1*(int)startDiff, compareLines),
+        vector<string> (firstContents.begin()+startDiff+1, firstContents.begin()+compareLines)));
         resDiff.secondFileDiff.insert(pair<regionDiff, vector<string>>
-        (pair<int,int>(-1*(int)startDiff, compareLines-1),
-        vector<string> (secondContents.begin()+startDiff-1, secondContents.begin()+compareLines)));
+        (pair<int,int>(-1*(int)startDiff, compareLines),
+        vector<string> (secondContents.begin()+startDiff+1, secondContents.begin()+compareLines)));
     } 
     return resDiff;
 }
