@@ -37,10 +37,60 @@ public:
 		return true;
 	}
 
+	void setFileName(int ID, string str)
+	{
+		if(ID == 1) firstFileName = str;
+		else if(ID == 2) secondFileName = str;
+	}
+
+	void setFolderName(int ID, string str)
+	{
+		if(ID == 1) firstFolderName = str;
+		else if(ID == 2) secondFolderName = str;
+	}
+
+	string getFileName(int ID)
+	{
+		if(ID == 1) return firstFileName;
+		else if(ID == 2) return secondFileName;
+	}
+
+	string getFolderName(int ID)
+	{
+		if(ID == 1) return firstFolderName;
+		else if(ID == 2) return secondFolderName;
+	}
+
+private:
 	string firstFileName;
 	string firstFolderName;
 	string secondFileName;
 	string secondFolderName;
+};
+
+class lineDiffInfo
+{
+public:
+	lineDiffInfo() = default;
+	~lineDiffInfo() = default;
+	map<regionDiff, vector<string>, regionDiffCmp> firstFileDiff;
+	map<regionDiff, vector<string>, regionDiffCmp> secondFileDiff;
+
+	void setString(int ID, string str)
+	{
+		if(ID == 1) l1 = str;
+		else if(ID == 2) l2 = str;
+	}
+
+	string getString(int ID)
+	{
+		if(ID == 1) return l1;
+		else if(ID == 2) return l2;
+	}
+
+private:
+	string l1;
+	string l2;
 };
 
 class diffPrinter
