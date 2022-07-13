@@ -38,10 +38,10 @@ diffPrinter* getPrinter::getDiffPrinter()
 bool mergedDiffPrint::printConsole()
 {
 	if(_diffInfo->firstFileDiff.size() != _diffInfo->secondFileDiff.size()) return false;
-	cout << "First file is:" << _diffInfo->firstFolderName.c_str() << "\\"
-	<< _diffInfo->firstFileName.c_str() << endl;
-	cout << "Second file is:" << _diffInfo->secondFolderName.c_str() << "\\"
-	<< _diffInfo->secondFileName.c_str() << endl;
+	cout << "First file is:" << _diffInfo->getFolderName(1).c_str() << "\\"
+	<< _diffInfo->getFileName(1).c_str() << endl;
+	cout << "Second file is:" << _diffInfo->getFolderName(2).c_str() << "\\"
+	<< _diffInfo->getFileName(2).c_str() << endl;
 
 	auto bDiff = _diffInfo->secondFileDiff.begin();
 	for(auto& i: _diffInfo->firstFileDiff)
@@ -74,12 +74,12 @@ bool mergedDiffPrint::printToFile()
 		return false;
 	}
 	filePrint += "First file is:";
-	filePrint += _diffInfo->firstFolderName;
-	filePrint += _diffInfo->firstFileName;
+	filePrint += _diffInfo->getFolderName(1);
+	filePrint += _diffInfo->getFileName(1);
 	filePrint += "\n";
 	filePrint += "Second file is:";
-	filePrint += _diffInfo->secondFolderName;
-	filePrint += _diffInfo->secondFileName;
+	filePrint += _diffInfo->getFolderName(2);
+	filePrint += _diffInfo->getFileName(2);
 	filePrint += "\n";
 
 	auto bDiff = _diffInfo->secondFileDiff.begin();
@@ -292,8 +292,6 @@ std::vector<std::string> split_string(const std::string& str,
         strings.push_back(str.substr(prev, pos - prev));
         prev = pos + 1;
     }
-
-    // To get the last substring (or only, if delimiter is not found)
     strings.push_back(str.substr(prev));
     return strings;
 }

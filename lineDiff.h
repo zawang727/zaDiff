@@ -1,8 +1,10 @@
+#pragma once
 #include <string>
 #include "printUtils.h"
 
 class lineDiff
 {
+public:
     lineDiff() = default;
     ~lineDiff() = default;
 

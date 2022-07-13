@@ -4,9 +4,13 @@
 #include "fileReader.h"
 #include "fileDiffSolver.h"
 #include "printUtils.h"
+#include "lineDiff.h"
 
 int main()
 {
+	lineDiff _lineDiff;
+	_lineDiff.execute(string("aabacd"),string("adbaabca"));
+
 	std::cout<<"hello world\n";
 	string firstFileName = "1.txt";
 	string firstFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\simpleSameLineNumber";

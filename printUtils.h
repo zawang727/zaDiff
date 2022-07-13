@@ -53,12 +53,14 @@ public:
 	{
 		if(ID == 1) return firstFileName;
 		else if(ID == 2) return secondFileName;
+		return string();
 	}
 
 	string getFolderName(int ID)
 	{
 		if(ID == 1) return firstFolderName;
 		else if(ID == 2) return secondFolderName;
+		return string();
 	}
 
 private:

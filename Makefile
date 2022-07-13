@@ -3,7 +3,8 @@ LINK_TARGET = test_me.exe
 OBJS = fileReader.o \
 	fileDiffSolver.o \
 	fileDiffSolverByLine.o \
-	printUtils.o
+	printUtils.o \
+	lineDiff.o
 
 REBUILDABLES = $(OBJS) $(LINK_TARGET)
 
@@ -17,6 +18,7 @@ fileReader.o : fileReader.h programOptions.h
 printUtils.o : printUtils.h programOptions.h
 fileDiffSolver.o : fileDiffSolver.h
 fileDiffSolverByLine.o : fileDiffSolverByLine.h
+lineDiff.o : programOptions.h printUtils.h
 
 
 all : $(LINK_TARGET)
