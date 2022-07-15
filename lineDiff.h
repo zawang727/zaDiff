@@ -8,5 +8,5 @@ public:
     lineDiff() = default;
     ~lineDiff() = default;
 
-    lineDiffInfo execute(std::string l1, std::string l2);
+    vector<std::tuple<size_t, size_t, size_t>> execute(std::string l1, std::string l2);
 };

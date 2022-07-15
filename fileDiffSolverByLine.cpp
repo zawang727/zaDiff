@@ -9,10 +9,10 @@ fileDiffSolver(_firstContents,_secondContents)
 diffInfo fileDiffSolverByLine::solve()
 {
     diffInfo resDiff;
-    resDiff.firstFileName = this->firstFileName;
-    resDiff.firstFolderName = this->firstFolderName;
-    resDiff.secondFileName = this->secondFileName;
-    resDiff.secondFolderName = this->secondFolderName;
+    resDiff.setFileName(1, this->firstFileName);
+    resDiff.setFolderName(1, this->firstFolderName);
+    resDiff.setFileName(2, this->secondFileName);
+    resDiff.setFolderName(2, this->secondFolderName);
 
     bool inDiff = false;
     int startDiff = 1;

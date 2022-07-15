@@ -4,7 +4,7 @@ enum solverEnum
 {
 	solverEnumDefault = 0,
 	solverEnumByLine = 1,
-	solverEnumSameLineGreedy = 2
+	solverHuntSzymanskiAlgorithm = 2
 };
 enum diffPrinterEnum
 { 
@@ -24,7 +24,8 @@ public:
 	int debugMsgLevel = 1;
 	solverEnum solver = solverEnumDefault;
 	diffPrinterEnum diffPrinter = diffPrinterEnumDefault;
-
+	float sameLineFilter = 0.5; // 0~1
+	size_t lineDiffMaxChar = 100;
 private:
 	programOptions() = default;
 	~programOptions() = default;

@@ -9,7 +9,7 @@
 int main()
 {
 	lineDiff _lineDiff;
-	_lineDiff.execute(string("aabacd"),string("adbaabca"));
+	_lineDiff.execute(string("aabacd566"),string("adbaabca5668"));
 
 	std::cout<<"hello world\n";
 	string firstFileName = "1.txt";
