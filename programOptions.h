@@ -24,8 +24,11 @@ public:
 	int debugMsgLevel = 1;
 	solverEnum solver = solverEnumDefault;
 	diffPrinterEnum diffPrinter = diffPrinterEnumDefault;
+
+	//solverHuntSzymanskiAlgorithm
 	float sameLineFilter = 0.5; // 0~1
 	size_t lineDiffMaxChar = 100;
+
 private:
 	programOptions() = default;
 	~programOptions() = default;
