@@ -19,7 +19,8 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
 
     sortString(sortedL2, l2);
 
-    vector<std::tuple<size_t, size_t, size_t>> LIS;  //asciiNum, l1ID, l2ID
+    vector<std::tuple<size_t, size_t, size_t>> identicalArray;  //asciiNum, l1ID, l2ID
+    vector<size_t> LISInput;
     
     for(size_t j = 0; j < l1.size(); ++j)
     {
@@ -27,30 +28,36 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
         if(sortedL2[i].size() == 0) continue;
         for(auto k = sortedL2[i].crbegin(); k != sortedL2[i].crend(); ++k)
         {
-            LIS.emplace_back(std::make_tuple(i, j, *k));
-            //std::printf("LIS %d %d %d\n",i,j,*k);
+            identicalArray.emplace_back(std::make_tuple(i, j, *k));
+            LISInput.emplace_back(*k);
+            if(programOptions::getInstance().debugMsgLevel > 10) 
+            {
+                std::printf("identicalArray %d %d %d\n",i,j,*k);
+            }
         }
     }
 
-    vector<size_t> tail;
+    vector<size_t> lis = lineDiff::LISSolver(LISInput);
+
+    /*vector<size_t> tail;
     vector<size_t> tailID;
-    vector<size_t> parent(LIS.size(), -1);
+    vector<size_t> parent(identicalArray.size(), -1);
     int last = -1;
 
-    for(size_t i = 1; i < LIS.size(); ++i)
+    for(size_t i = 1; i < identicalArray.size(); ++i)
     {
-        auto it = std::lower_bound(tail.begin(), tail.end(), std::get<2>(LIS[i]));
+        auto it = std::lower_bound(tail.begin(), tail.end(), std::get<2>(identicalArray[i]));
         if(it==tail.end()) 
         {
             parent[i] = (tail.empty()) ? -1 : tailID.back();
-            tail.push_back(std::get<2>(LIS[i]));
+            tail.push_back(std::get<2>(identicalArray[i]));
             tailID.push_back(i);
             last = i;
         }
         else 
         {
             parent[i] = (it == tail.begin()) ? -1 : tailID[(size_t)(it - tail.begin()) - 1];
-            *it = std::get<2>(LIS[i]);
+            *it = std::get<2>(identicalArray[i]);
             tailID[(size_t)(it - tail.begin())] = i;
         }
     }
@@ -61,24 +68,25 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
     while (last != -1) {
         lis[--m] = last;
         last = parent[last];
-    }
+    }*/
 
     //std::printf("%d\n",last);
-    for(auto &i: lis )
+    if(programOptions::getInstance().debugMsgLevel > 10) 
     {
-        std::printf("%d, ", l2[std::get<2>(LIS[i])]);
+        for(auto &i: lis ) std::printf("%d, ", std::get<2>(identicalArray[i]));
+        std::printf("\n");
     }
 
     vector<std::tuple<size_t, size_t, size_t>> result;
     for(auto &i: lis )
     {
-        result.push_back(LIS[i]);
+        result.push_back(identicalArray[i]);
     }
 
     return result;
 }
 
-size_t executeGetIdenticalNumber(std::string l1, std::string l2)
+size_t lineDiff::executeGetIdenticalNumber(std::string l1, std::string l2)
 {
     vector<set<size_t>> sortedL2(128);
 
@@ -115,3 +123,38 @@ size_t executeGetIdenticalNumber(std::string l1, std::string l2)
     return tail.size();
 }
 
+template <typename T>
+vector<T> lineDiff::LISSolver(vector<T> input)
+{
+    vector<T> tail;
+    vector<size_t> tailID;
+    vector<size_t> parent(input.size(), -1);
+    int last = -1;
+
+    for(size_t i = 1; i < input.size(); ++i)
+    {
+        auto it = std::lower_bound(tail.begin(), tail.end(), input[i]);
+        if(it==tail.end()) 
+        {
+            parent[i] = (tail.empty()) ? -1 : tailID.back();
+            tail.push_back(input[i]);
+            tailID.push_back(i);
+            last = i;
+        }
+        else 
+        {
+            parent[i] = (it == tail.begin()) ? -1 : tailID[(size_t)(it - tail.begin()) - 1];
+            *it = input[i];
+            tailID[(size_t)(it - tail.begin())] = i;
+        }
+    }
+    
+    size_t m = tail.size();
+    vector<T> lis(m);
+  
+    while (last != -1) {
+        lis[--m] = last;
+        last = parent[last];
+    }
+    return lis;
+}    

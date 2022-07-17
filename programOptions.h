@@ -26,7 +26,8 @@ public:
 	diffPrinterEnum diffPrinter = diffPrinterEnumDefault;
 
 	//solverHuntSzymanskiAlgorithm
-	float sameLineFilter = 0.5; // 0~1
+	float sameLineFilter = 0.9; // 0~1
+	float identicalLineFilter = 0.4; // 0~1
 	size_t lineDiffMaxChar = 100;
 
 private:
