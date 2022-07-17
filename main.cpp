@@ -11,6 +11,7 @@ int main()
 	lineDiff _lineDiff;
 	_lineDiff.executeGetDiff(string("aabacd566"),string("adbaabca5668"));
 
+	programOptions::getInstance().solver = solverGreedy1;
 	std::cout<<"hello world\n";
 	string firstFileName = "1.txt";
 	string firstFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\simpleSameLineNumber";

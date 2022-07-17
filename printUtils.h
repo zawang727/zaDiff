@@ -74,7 +74,7 @@ class lineDiffInfo
 {
 public:
 	lineDiffInfo() = default;
-	~lineDiffInfo() = default;
+	~lineDiffInfo() = default;   
 	map<regionDiff, vector<string>, regionDiffCmp> firstFileDiff;
 	map<regionDiff, vector<string>, regionDiffCmp> secondFileDiff;
 

@@ -9,7 +9,7 @@ void sortString(vector<set<size_t>>& result, std::string& str)
 {
     for(size_t i = 0; i < str.size(); ++i)
     {
-        result[size_t(str[i]-'0')].insert(i);
+        result[size_t(str[i])].insert(i);
     }
 }
 
@@ -24,7 +24,7 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
     
     for(size_t j = 0; j < l1.size(); ++j)
     {
-        size_t i = l1[j] - '0';
+        size_t i = l1[j];
         if(sortedL2[i].size() == 0) continue;
         for(auto k = sortedL2[i].crbegin(); k != sortedL2[i].crend(); ++k)
         {
@@ -88,6 +88,7 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
 
 size_t lineDiff::executeGetIdenticalNumber(std::string l1, std::string l2)
 {
+    if(programOptions::getInstance().debugMsgLevel > 10) std::printf("executeGetIdenticalNumber %s %s\n",l1.c_str(),l2.c_str());    
     vector<set<size_t>> sortedL2(128);
 
     sortString(sortedL2, l2);
@@ -96,12 +97,12 @@ size_t lineDiff::executeGetIdenticalNumber(std::string l1, std::string l2)
     
     for(size_t j = 0; j < l1.size(); ++j)
     {
-        size_t i = l1[j] - '0';
+        size_t i = l1[j];
         if(sortedL2[i].size() == 0) continue;
         for(auto k = sortedL2[i].crbegin(); k != sortedL2[i].crend(); ++k)
         {
             LIS.emplace_back(std::make_tuple(i, j, *k));
-            //std::printf("LIS %d %d %d\n",i,j,*k);
+            if(programOptions::getInstance().debugMsgLevel > 10) std::printf("LIS %d %d %d\n",i,j,*k);
         }
     }
 
@@ -119,7 +120,7 @@ size_t lineDiff::executeGetIdenticalNumber(std::string l1, std::string l2)
             *it = std::get<2>(LIS[i]);
         }
     }
-
+    if(programOptions::getInstance().debugMsgLevel > 10) std::printf("executeGetIdenticalNumber finish\n"); 
     return tail.size();
 }
 

@@ -1,6 +1,7 @@
 #include "fileDiffSolver.h"
 #include "programOptions.h"
 #include "fileDiffSolverByLine.h"
+#include "fileDiffSolverGreedy.h"
 
 fileDiffSolver::fileDiffSolver(vector<string>& _firstContents, 
 vector<string>& _secondContents):
@@ -36,6 +37,9 @@ vector<string>& _secondContents)
     {
         case solverEnumByLine:
         resSolver = new fileDiffSolverByLine(_firstContents, _secondContents);
+        break;
+        case solverGreedy1:
+        resSolver = new fileDiffSolverGreedy(_firstContents, _secondContents);
         break;
         default:
         resSolver = new fileDiffSolverByLine(_firstContents, _secondContents);

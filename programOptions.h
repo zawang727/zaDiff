@@ -4,7 +4,7 @@ enum solverEnum
 {
 	solverEnumDefault = 0,
 	solverEnumByLine = 1,
-	solverHuntSzymanskiAlgorithm = 2
+	solverGreedy1 = 2
 };
 enum diffPrinterEnum
 { 
@@ -21,7 +21,7 @@ public:
 		static programOptions instance;
 		return instance;
 	}
-	int debugMsgLevel = 1;
+	int debugMsgLevel = 15;
 	solverEnum solver = solverEnumDefault;
 	diffPrinterEnum diffPrinter = diffPrinterEnumDefault;
 
