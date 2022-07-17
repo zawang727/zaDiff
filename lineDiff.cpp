@@ -102,7 +102,7 @@ size_t lineDiff::executeGetIdenticalNumber(std::string l1, std::string l2)
         for(auto k = sortedL2[i].crbegin(); k != sortedL2[i].crend(); ++k)
         {
             LIS.emplace_back(std::make_tuple(i, j, *k));
-            if(programOptions::getInstance().debugMsgLevel > 10) std::printf("LIS %d %d %d\n",i,j,*k);
+            //if(programOptions::getInstance().debugMsgLevel > 20) std::printf("LIS %d %d %d\n",i,j,*k);
         }
     }
 
@@ -132,6 +132,12 @@ vector<T> lineDiff::LISSolver(vector<T> input)
     vector<size_t> parent(input.size(), -1);
     int last = -1;
 
+    if(programOptions::getInstance().debugMsgLevel > 10) 
+    {
+        for(auto &i: input ) std::printf("%d, ", i);
+        std::printf("\n");
+    }
+
     for(size_t i = 1; i < input.size(); ++i)
     {
         auto it = std::lower_bound(tail.begin(), tail.end(), input[i]);
@@ -148,6 +154,12 @@ vector<T> lineDiff::LISSolver(vector<T> input)
             *it = input[i];
             tailID[(size_t)(it - tail.begin())] = i;
         }
+    }
+
+    if(programOptions::getInstance().debugMsgLevel > 10) 
+    {
+        for(auto &i: parent ) std::printf("%d, ", i);
+        std::printf("\n");
     }
     
     size_t m = tail.size();

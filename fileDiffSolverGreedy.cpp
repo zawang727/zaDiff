@@ -1,6 +1,7 @@
 #include <tuple>
 #include <vector>
 #include <math.h>
+#include <algorithm>
 #include "fileDiffSolverGreedy.h"
 #include "programOptions.h"
 #include "lineDiff.h"
@@ -33,7 +34,7 @@ diffInfo fileDiffSolverGreedy::solve()
     vector<pair<float,size_t>> tempJID;
     vector<size_t> LISInput;
     vector<size_t> LISOutput;
-    int secondContentsStartID = 0;
+    int secondContentsStartID = 0; 
 
     if(programOptions::getInstance().debugMsgLevel > 0) printf("start compare lines\n");
 
@@ -51,19 +52,18 @@ diffInfo fileDiffSolverGreedy::solve()
             inputStr2 = this->secondContents[j];
             if(inputStr2.size()>100) inputStr2.resize(100);
             identicalNum = lineDiff::executeGetIdenticalNumber(inputStr1,inputStr1);
-            similarity = (float) identicalNum / 
-            (inputStr1.size() > inputStr2.size())? (float) inputStr1.size(): (float) inputStr2.size();
-            if(programOptions::getInstance().debugMsgLevel > 0) printf("%f, ", similarity);
+            similarity = ((float)identicalNum / (float)max((int)max(inputStr1.size(), inputStr2.size()), 1));
+            if(programOptions::getInstance().debugMsgLevel > 0) printf("%f %d %d, ", similarity, identicalNum, j);
             
             if(similarity >= _sameLineFilter) 
             {
-                tempJID.emplace_back(similarity,j);
+                tempJID.emplace_back(pair<float,size_t>(similarity,j));
                 secondContentsStartID = j;
                 break;
             }
             else if(similarity >= _identicalLineFilter)
             {
-                tempJID.emplace_back(similarity,j);
+                tempJID.emplace_back(pair<float,size_t>(similarity,j));
                 score += 20;
                 if(score >= 100) break;
             }
@@ -81,7 +81,16 @@ diffInfo fileDiffSolverGreedy::solve()
     LISOutput = lineDiff::LISSolver(LISInput);
     int firstHead, secondHead;
     bool inIdentical = true;
-    if(programOptions::getInstance().debugMsgLevel > 0) printf("Compose to diffinfo\n");
+    if(programOptions::getInstance().debugMsgLevel > 0) printf("Compose to the diffinfo LISInput size %d LISOutput size %d \n",LISInput.size(), LISOutput.size());
+    if(programOptions::getInstance().debugMsgLevel > 0)
+    {
+        std::printf("identicalArray result ");
+        for(const auto& i : LISOutput)
+        {
+            std::printf("%d %d,", std::get<1>(identicalArray[i]),std::get<2>(identicalArray[i]));
+        }
+        std::printf("\n");
+    }
     //Here compose to diff info
     
     if(!LISOutput.empty() && (std::get<1>(identicalArray[LISOutput[0]]) != 1 
@@ -105,10 +114,12 @@ diffInfo fileDiffSolverGreedy::solve()
         std::get<1>(identicalArray[LISOutput[i]])+1 == std::get<1>(identicalArray[LISOutput[i+1]]) &&
         std::get<2>(identicalArray[LISOutput[i]])+1 == std::get<2>(identicalArray[LISOutput[i+1]]) )
         {
+            printf("continue\n");
             continue;
         }
         else
         {
+            printf("LISOutput\n");
             resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
                 (pair<int,int>(-firstHead,std::get<1>(identicalArray[LISOutput[i]])),
                 vector<string> (firstContents.begin() + firstHead +1, 
@@ -117,7 +128,7 @@ diffInfo fileDiffSolverGreedy::solve()
                 (pair<int,int>(-secondHead,std::get<2>(identicalArray[LISOutput[i]])),
                 vector<string> (secondContents.begin() + secondHead +1, 
                 secondContents.begin()+std::get<2>(identicalArray[LISOutput[i]]))));
-            
+            printf("LISOutput2\n");
             resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
                 (pair<int,int>(std::get<1>(identicalArray[LISOutput[i]]),-std::get<1>(identicalArray[LISOutput[i+1]])),
                 vector<string> (firstContents.begin() + std::get<1>(identicalArray[LISOutput[i]]) +1, 
