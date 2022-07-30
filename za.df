@@ -1,2 +1,71 @@
 First file is:C:\Users\Jennan Wang\Desktop\zaDiff\testcases\simpleSameLineNumber1.txt
 Second file is:C:\Users\Jennan Wang\Desktop\zaDiff\testcases\simpleSameLineNumber2.txt
+First file line 1 Downward to 24 Upper.
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <iomanip>
+
+using std::cout; using std::endl;
+using std::vector; using std::copy;
+using std::setw;
+
+int main() {
+    vector<int> int_vec {1, 23, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};
+
+    vector<int> sub_vec {int_vec.begin(), int_vec.begin()+5};
+
+    cout << std::left << setw(10) << "vec: ";
+    copy(int_vec.begin(), int_vec.end(),
+         std::ostream_iterator<int>(cout,"; "));
+    cout << endl;
+
+    cout << std::left << setw(10) << "subvec: ";
+    copy(sub_vec.begin(), sub_vec.end(),
+         std::ostream_iterator<int>(cout,"; "));
+    cout << endl;
+Second file line 1 Downward to 24 Upper.
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <iomanip>
+
+using std::cout; using std::endl;
+using std::vector; using std::copy;
+using std::setw;
+
+int main() {
+    vector<int> i, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};645d
+
+    vector<int> sub_vec {int_vec.begin(), int_vec.begin()+5};
+
+    cout << std::left << sdvsvsetw(10) << "vec: ";
+    copy(int_vec.begin(), int_vec.end(),
+         stditerator<int>(cout,"; "));
+    cout << endl;
+
+    cout << std::left << setw(10) << "subvec: ";
+    copy(subec.end(),
+         std::os_iterator<int>(cout,"; "));
+    cou534fuhndl;1
+---------------------------------------
+First file line 24 Upper to 25 Downward.
+Second file line 24 Upper to 26 Downward.
+    return EXIT_SESS;
+---------------------------------------
+First file line 25 Downward to 25 Upper.
+
+Second file line 26 Downward to 26 Upper.
+    return EXIT_SESS;
+---------------------------------------
+First file line 25 Upper to 27 Downward.
+}
+Second file line 26 Upper to 27 Downward.
+---------------------------------------
+First file line 27 Downward to 27 Upper.
+}
+Second file line 27 Downward to 27 Upper.
+}54651
+---------------------------------------

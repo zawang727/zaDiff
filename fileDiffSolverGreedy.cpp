@@ -27,7 +27,7 @@ diffInfo fileDiffSolverGreedy::solve()
     vector<std::tuple<float, size_t, size_t>> identicalArray;
 
 
-    string inputStr1, inputStr2;
+    string inputStr1, inputStr2; 
     size_t identicalNum;
     float similarity;
     size_t score;
@@ -44,29 +44,26 @@ diffInfo fileDiffSolverGreedy::solve()
         if(inputStr1.size()>100) inputStr1.resize(100);
         score = 0;
 
-        if(programOptions::getInstance().debugMsgLevel > 0) printf("Compare lines %s %d\n", inputStr1.c_str(), this->secondContents.size());
+        if(programOptions::getInstance().debugMsgLevel > 5) printf("Compare lines %s %d\n", inputStr1.c_str(), this->secondContents.size());
 
         //here j should from big to small use a buffer to store candidates j
         for(int j = secondContentsStartID; j < this->secondContents.size(); ++j)
         {
             inputStr2 = this->secondContents[j];
             if(inputStr2.size()>100) inputStr2.resize(100);
-            identicalNum = lineDiff::executeGetIdenticalNumber(inputStr1,inputStr1);
-            similarity = ((float)identicalNum / (float)max((int)max(inputStr1.size(), inputStr2.size()), 1));
-            if(programOptions::getInstance().debugMsgLevel > 0) printf("%f %d %d, ", similarity, identicalNum, j);
+            if(inputStr1.size() == 0 && inputStr2.size() == 0)
+            {
+                similarity = 1.0;
+            }
+            else
+            {
+                identicalNum = lineDiff::executeGetIdenticalNumber(inputStr1,inputStr1);
+                similarity = ((float)identicalNum / (float)max((int)max(inputStr1.size(), inputStr2.size()), 1));
+            }
             
-            if(similarity >= _sameLineFilter) 
-            {
-                tempJID.emplace_back(pair<float,size_t>(similarity,j));
-                secondContentsStartID = j;
-                break;
-            }
-            else if(similarity >= _identicalLineFilter)
-            {
-                tempJID.emplace_back(pair<float,size_t>(similarity,j));
-                score += 20;
-                if(score >= 100) break;
-            }
+            if(programOptions::getInstance().debugMsgLevel > 0 && similarity>0.4) printf("%f %d %d\n", similarity, i , j);
+            
+            if(similarity >= _identicalLineFilter)  tempJID.emplace_back(pair<float,size_t>(similarity,j));
         }
 
         //here push to identicalArray
@@ -79,7 +76,7 @@ diffInfo fileDiffSolverGreedy::solve()
     }
 
     LISOutput = lineDiff::LISSolver(LISInput);
-    int firstHead, secondHead;
+    int firstHead = 1, secondHead = 1;
     bool inIdentical = true;
     if(programOptions::getInstance().debugMsgLevel > 0) printf("Compose to the diffinfo LISInput size %d LISOutput size %d \n",LISInput.size(), LISOutput.size());
     if(programOptions::getInstance().debugMsgLevel > 0)
@@ -93,8 +90,8 @@ diffInfo fileDiffSolverGreedy::solve()
     }
     //Here compose to diff info
     
-    if(!LISOutput.empty() && (std::get<1>(identicalArray[LISOutput[0]]) != 1 
-    || std::get<1>(identicalArray[LISOutput[0]]) !=1))
+    if(!LISOutput.empty() && (std::get<1>(identicalArray[LISOutput[0]]) != 0 
+    || std::get<1>(identicalArray[LISOutput[0]]) !=0))
     {
         resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
             (pair<int,int>(-1,std::get<1>(identicalArray[LISOutput[0]])),
@@ -104,43 +101,59 @@ diffInfo fileDiffSolverGreedy::solve()
             (pair<int,int>(-1,std::get<2>(identicalArray[LISOutput[0]])),
             vector<string> (firstContents.begin(), 
             secondContents.begin()+std::get<2>(identicalArray[LISOutput[0]]))));
-        firstHead = std::get<1>(identicalArray[LISOutput[0]]);
-        secondHead = std::get<2>(identicalArray[LISOutput[0]]);
+        firstHead = std::get<1>(identicalArray[LISOutput[0]]) + 1;
+        secondHead = std::get<2>(identicalArray[LISOutput[0]]) + 1;
     }
     if(programOptions::getInstance().debugMsgLevel > 0) printf("Compose to diffinfo 2 \n");
-    for(int i = 0; i < LISOutput.size() -1 ; ++i)
+    for(int i = 0; i < LISOutput.size(); ++i)
     {
         if(i < LISOutput.size() -1 &&
         std::get<1>(identicalArray[LISOutput[i]])+1 == std::get<1>(identicalArray[LISOutput[i+1]]) &&
         std::get<2>(identicalArray[LISOutput[i]])+1 == std::get<2>(identicalArray[LISOutput[i+1]]) )
         {
-            printf("continue\n");
             continue;
         }
         else
         {
-            printf("LISOutput\n");
             resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
                 (pair<int,int>(-firstHead,std::get<1>(identicalArray[LISOutput[i]])),
-                vector<string> (firstContents.begin() + firstHead +1, 
+                vector<string> (firstContents.begin() + (firstHead - 1), 
                 firstContents.begin()+std::get<1>(identicalArray[LISOutput[i]]))));
             resDiff.secondFileDiff.insert(pair<regionDiff, vector<string>>
                 (pair<int,int>(-secondHead,std::get<2>(identicalArray[LISOutput[i]])),
-                vector<string> (secondContents.begin() + secondHead +1, 
+                vector<string> (secondContents.begin() + (secondHead - 1), 
                 secondContents.begin()+std::get<2>(identicalArray[LISOutput[i]]))));
-            printf("LISOutput2\n");
+
+            if(i+1 == LISOutput.size())
+            {
+                firstHead = firstContents.size();
+                secondHead = secondContents.size();
+            }
+            else
+            {
+                firstHead = std::get<1>(identicalArray[LISOutput[i+1]]);
+                secondHead = std::get<2>(identicalArray[LISOutput[i+1]]);
+            }
+            
             resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
-                (pair<int,int>(std::get<1>(identicalArray[LISOutput[i]]),-std::get<1>(identicalArray[LISOutput[i+1]])),
+                (pair<int,int>(std::get<1>(identicalArray[LISOutput[i]]),-firstHead),
                 vector<string> (firstContents.begin() + std::get<1>(identicalArray[LISOutput[i]]) +1, 
-                firstContents.begin()+std::get<1>(identicalArray[LISOutput[i+1]]))));
+                firstContents.begin()+firstHead)));
             resDiff.secondFileDiff.insert(pair<regionDiff, vector<string>>
-                (pair<int,int>(std::get<2>(identicalArray[LISOutput[i]]),-std::get<2>(identicalArray[LISOutput[i+1]])),
+                (pair<int,int>(std::get<2>(identicalArray[LISOutput[i]]),-secondHead),
                 vector<string> (secondContents.begin() + std::get<2>(identicalArray[LISOutput[i]]) +1, 
-                secondContents.begin()+std::get<2>(identicalArray[LISOutput[i+1]]))));
-            firstHead = std::get<1>(identicalArray[LISOutput[i+1]]);
-            secondHead = std::get<2>(identicalArray[LISOutput[i+1]]);
+                secondContents.begin()+secondHead))); 
         }
     }
+
+    resDiff.firstFileDiff.insert(pair<regionDiff, vector<string>>
+        (pair<int,int>(-firstHead,secondContents.size()),
+        vector<string> (firstContents.begin() + (firstHead - 1), 
+        firstContents.end())));
+    resDiff.secondFileDiff.insert(pair<regionDiff, vector<string>>
+        (pair<int,int>(-secondHead,secondContents.size()),
+        vector<string> (secondContents.begin() + (secondHead - 1), 
+        secondContents.end())));
 
     //need add rest of it
 

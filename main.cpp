@@ -9,7 +9,7 @@
 int main()
 {
 	lineDiff _lineDiff;
-	_lineDiff.executeGetDiff(string("aabacd566"),string("adbaabca5668"));
+	_lineDiff.executeGetDiff(string("#include <iostrem>"),string("#include <iostream>"));
 
 	programOptions::getInstance().solver = solverGreedy1;
 	std::cout<<"hello world\n";
