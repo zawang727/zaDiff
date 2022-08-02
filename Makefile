@@ -5,7 +5,9 @@ OBJS = fileReader.o \
 	fileDiffSolverByLine.o \
 	printUtils.o \
 	lineDiff.o \
-	fileDiffSolverGreedy.o
+	fileDiffSolverGreedy.o \
+	fileDiffSolverHuntSzymanski.o
+
 
 REBUILDABLES = $(OBJS) $(LINK_TARGET)
 
@@ -20,7 +22,8 @@ printUtils.o : printUtils.h programOptions.h
 fileDiffSolver.o : fileDiffSolver.h
 fileDiffSolverByLine.o : fileDiffSolverByLine.h
 lineDiff.o : programOptions.h printUtils.h
-fileDiffSolverGreedy.o : lineDiff.o fileDiffSolver.h
+fileDiffSolverGreedy.o : lineDiff.h fileDiffSolver.h
+fileDiffSolverHuntSzymanski.o : lineDiff.o fileDiffSolver.h
 
 
 all : $(LINK_TARGET)

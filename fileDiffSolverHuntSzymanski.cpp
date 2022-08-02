@@ -2,6 +2,7 @@
 #include <vector>
 #include <math.h>
 #include <algorithm>
+#include <cstring>
 #include "fileDiffSolverHuntSzymanski.h"
 #include "programOptions.h"
 #include "lineDiff.h"
@@ -50,8 +51,9 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
     }
 
     std::vector<std::tuple<size_t, size_t, size_t>> LIS;
+    
     LIS = lineDiff::executeGetDiff(firstFileString,secondFileString);
-
+    std::cout<<"lineDiff::executeGetDiff2\n";
     size_t fistFPrevLineNum = 0;
     size_t secondFPrevLineNum = 0;
     size_t fistFLineNum = 0;
@@ -59,10 +61,12 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
 
     for(int i = 0; i < LIS.size(); ++i)
     {
-        if(!strcmp(&firstFileString[std::get<0>(LIS[i])],"\n") )
+        //cout<<((char)std::get<0>(LIS[i]))<<(bool)((char)std::get<0>(LIS[i]) == '\n')<<endl;
+        if((char)std::get<0>(LIS[i]) == '\n' )
         {
             size_t firstFIdenticalID = std::get<1>(LIS[i]);
             size_t secondFIdenticalID = std::get<2>(LIS[i]);
+            std::cout<<firstFIdenticalID<<" "<<secondFIdenticalID<<"\n";
             while(firstFIdenticalID != (lineBreakPositionFirst[fistFLineNum]+1)) fistFLineNum++;
             while(secondFIdenticalID != (lineBreakPositionSecond[secondFLineNum]+1)) secondFLineNum++;
             resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
@@ -77,12 +81,12 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
             secondFPrevLineNum = secondFLineNum + 1;
         }
     }
-
+    std::cout<<"lineDiff::executeGetDiff3\n";
     resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
         (pair<int,int>(-(fistFPrevLineNum+1),lineBreakPositionFirst.size()),
         vector<string> (firstContents.begin() + fistFPrevLineNum, 
         firstContents.begin()+lineBreakPositionFirst.size())));
-    resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
+    resDiff.secondFileDiff.insert(std::pair<regionDiff, vector<string>>
         (pair<int,int>(-(secondFPrevLineNum+1),lineBreakPositionSecond.size()),
         vector<string> (secondContents.begin() + secondFPrevLineNum, 
         secondContents.begin()+lineBreakPositionSecond.size())));
