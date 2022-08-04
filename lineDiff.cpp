@@ -38,7 +38,8 @@ vector<std::tuple<size_t, size_t, size_t>> lineDiff::executeGetDiff(std::string 
     }
 
     vector<size_t> lis = lineDiff::LISSolver(LISInput);
-
+    
+    if(programOptions::getInstance().debugMsgLevel > 15)
     {
         for(auto &i: lis ) std::printf("%d, ", std::get<2>(identicalArray[i]));
         std::printf("\n");

@@ -42,7 +42,7 @@ bool mergedDiffPrint::printConsole()
 	<< _diffInfo->getFileName(1).c_str() << endl;
 	cout << "Second file is:" << _diffInfo->getFolderName(2).c_str() << "\\"
 	<< _diffInfo->getFileName(2).c_str() << endl;
-
+	
 	auto bDiff = _diffInfo->secondFileDiff.begin();
 	for(auto& i: _diffInfo->firstFileDiff)
 	{
@@ -142,7 +142,7 @@ bool singleFileDiffPrint::printConsole()
  	bool isInADiff =false;
 	auto diffIterThis = (fileIndex==2)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
 	auto diffIterAnother = (fileIndex==1)? _diffInfo->secondFileDiff.begin():_diffInfo->firstFileDiff.begin();
-
+	
 	for(unsigned int i = 0; i < originalContents->size(); ++i)
 	{
 		if(-(diffIterThis->first.second) == static_cast<int>(i+1) && isInADiff)

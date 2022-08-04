@@ -24,8 +24,10 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
     size_t _lineDiffMaxChar = programOptions::getInstance().lineDiffMaxChar;
     string firstFileString;
     string secondFileString;
-    vector<size_t> lineBreakPositionFirst(firstContents.size(),0);
-    vector<size_t> lineBreakPositionSecond(secondContents.size(),0);
+    vector<size_t> lineBreakPositionFirst;
+    vector<size_t> lineBreakPositionSecond;
+    lineBreakPositionFirst.reserve(firstContents.size());
+    lineBreakPositionSecond.reserve(secondContents.size());
 
 
     for(auto&i : firstContents)
@@ -35,7 +37,7 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
             i.resize(_lineDiffMaxChar);
         }
         firstFileString += i;
-        lineBreakPositionFirst.emplace_back(firstFileString.size()-1);
+        lineBreakPositionFirst.emplace_back(firstFileString.size());
         firstFileString += "\n";
     }
 
@@ -46,14 +48,14 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
             i.resize(_lineDiffMaxChar);
         }
         secondFileString += i;
-        lineBreakPositionSecond.emplace_back(secondFileString.size()-1);
+        lineBreakPositionSecond.emplace_back(secondFileString.size());
         secondFileString += "\n";
     }
 
     std::vector<std::tuple<size_t, size_t, size_t>> LIS;
     
     LIS = lineDiff::executeGetDiff(firstFileString,secondFileString);
-    std::cout<<"lineDiff::executeGetDiff2\n";
+    if(programOptions::getInstance().debugMsgLevel > 10) std::cout<<"lineDiff::executeGetDiff2\n";
     size_t fistFPrevLineNum = 0;
     size_t secondFPrevLineNum = 0;
     size_t fistFLineNum = 0;
@@ -61,19 +63,20 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
 
     for(int i = 0; i < LIS.size(); ++i)
     {
-        //cout<<((char)std::get<0>(LIS[i]))<<(bool)((char)std::get<0>(LIS[i]) == '\n')<<endl;
+        if(programOptions::getInstance().debugMsgLevel > 15) cout<<((char)std::get<0>(LIS[i]))<<(bool)((char)std::get<0>(LIS[i]) == '\n')<<endl;
         if((char)std::get<0>(LIS[i]) == '\n' )
         {
             size_t firstFIdenticalID = std::get<1>(LIS[i]);
             size_t secondFIdenticalID = std::get<2>(LIS[i]);
-            std::cout<<firstFIdenticalID<<" "<<secondFIdenticalID<<"\n";
-            while(firstFIdenticalID != (lineBreakPositionFirst[fistFLineNum]+1)) fistFLineNum++;
-            while(secondFIdenticalID != (lineBreakPositionSecond[secondFLineNum]+1)) secondFLineNum++;
+            if(programOptions::getInstance().debugMsgLevel > 15) std::cout<<firstFIdenticalID<<" "<<secondFIdenticalID;
+            while(firstFIdenticalID != lineBreakPositionFirst[fistFLineNum]) fistFLineNum++;
+            while(secondFIdenticalID != lineBreakPositionSecond[secondFLineNum]) secondFLineNum++;
+            if(programOptions::getInstance().debugMsgLevel > 15) std::cout<<" "<<fistFLineNum<<" "<<secondFLineNum<<"\n";
             resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
                 (pair<int,int>(-(fistFPrevLineNum+1),fistFLineNum+1),
                 vector<string> (firstContents.begin() + fistFPrevLineNum, 
                 firstContents.begin()+fistFLineNum +1)));
-            resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
+            resDiff.secondFileDiff.insert(std::pair<regionDiff, vector<string>>
                 (pair<int,int>(-(secondFPrevLineNum+1),secondFLineNum+1),
                 vector<string> (secondContents.begin() + secondFPrevLineNum, 
                 secondContents.begin()+secondFLineNum +1)));
@@ -81,7 +84,7 @@ diffInfo fileDiffSolverHuntSzymanski::solve()
             secondFPrevLineNum = secondFLineNum + 1;
         }
     }
-    std::cout<<"lineDiff::executeGetDiff3\n";
+    if(programOptions::getInstance().debugMsgLevel > 10) std::cout<<"lineDiff::executeGetDiff3\n";
     resDiff.firstFileDiff.insert(std::pair<regionDiff, vector<string>>
         (pair<int,int>(-(fistFPrevLineNum+1),lineBreakPositionFirst.size()),
         vector<string> (firstContents.begin() + fistFPrevLineNum, 

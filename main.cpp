@@ -14,9 +14,9 @@ int main()
 	programOptions::getInstance().solver = solverHuntSzymanski;//solverGreedy1;
 	std::cout<<"hello world\n";
 	string firstFileName = "1.txt";
-	string firstFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\simpleSameLineNumber";
+	string firstFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\DiffLineNumber";
 	string secondFileName = "2.txt";
-	string secondFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\simpleSameLineNumber";
+	string secondFolderName = "C:\\Users\\Jennan Wang\\Desktop\\zaDiff\\testcases\\DiffLineNumber";
 	fileReader reader1;
 	reader1.setFilePath(firstFolderName + "\\" + firstFileName);
 	reader1.read();

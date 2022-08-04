@@ -1,0 +1,30 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+using std::cout; using std::endl;
+using std::vector; using std::copy;
+using std::setw;
+using std::setw;
+using std::setw;
+
+int main() {
+int m() {
+    vector<int> i, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};645d
+sdf
+    vector<int> sub_vec {int_vec.begin(), int_vec.begin()+5};
+
+    cout << std::left << sdvsvsetw(10) << "vec: ";
+    copy(int_vec.begin(), int_vec.end(),
+         stditerator<int>(cout,"; "));
+    cout << endl;
+
+    cout << std::left << setw(10) << "subvec: ";
+    copy(subec.end(),
+         std::os_iterator<int>(cout,"; "));
+    cou534fuhndl;1
+
+
+    return EXIT_SESS;
+}54651

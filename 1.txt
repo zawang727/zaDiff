@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <iomanip>
+
+using std::cout; using std::endl;
+using std::vector; using std::copy;
+using std::setw;
+
+int main() {
+    vector<int> int_vec {1, 23, 43, 324, 10, 222, 424,
+                            649, 1092, 110, 129, 40, 3024};
+
+    vector<int> sub_vec {int_vec.begin(), int_vec.begin()+5};
+
+    cout << std::left << setw(10) << "vec: ";
+    copy(int_vec.begin(), int_vec.end(),
+         std::ostream_iterator<int>(cout,"; "));
+    cout << endl;
+
+    cout << std::left << setw(10) << "subvec: ";
+    copy(sub_vec.begin(), sub_vec.end(),
+         std::ostream_iterator<int>(cout,"; "));
+    cout << endl;
+
+    return EXIT_SUCCESS;
+}
