@@ -1,10 +1,18 @@
+PROJDIR := $(realpath $(CURDIR)/..)
+SOURCEDIR := $(PROJDIR)/Sources
+BUILDDIR := $(PROJDIR)/Build
 LINK_TARGET = test_me.exe
 
+VERBOSE = TRUE
+
+all:
+    +$(MAKE) -C Solver
+
 OBJS = fileReader.o \
-	fileDiffSolver.o \
-	fileDiffSolverByLine.o \
 	printUtils.o \
 	lineDiff.o \
+	fileDiffSolver.o \
+	fileDiffSolverByLine.o \
 	fileDiffSolverGreedy.o \
 	fileDiffSolverHuntSzymanski.o
 
@@ -19,9 +27,9 @@ $(LINK_TARGET) : $(OBJS)
 
 fileReader.o : fileReader.h programOptions.h
 printUtils.o : printUtils.h programOptions.h
+lineDiff.o : programOptions.h printUtils.h
 fileDiffSolver.o : fileDiffSolver.h
 fileDiffSolverByLine.o : fileDiffSolverByLine.h
-lineDiff.o : programOptions.h printUtils.h
 fileDiffSolverGreedy.o : lineDiff.h fileDiffSolver.h
 fileDiffSolverHuntSzymanski.o : lineDiff.o fileDiffSolver.h
 
